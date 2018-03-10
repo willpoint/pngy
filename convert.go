@@ -8,8 +8,6 @@ import (
 	"os"
 )
 
-const dstExt = ".png"
-
 // Decoder is the interface that wraps any type of file extension
 // supported for conversion
 type Decoder interface {

@@ -1,10 +1,20 @@
 package main
 
 import (
+	"log"
 	"os"
 	"path"
 	"strings"
 )
+
+// handleErr logs the error with the provided logger
+// and exits the program
+func handleErr(err error, log *log.Logger, msgf string, msgArgs ...interface{}) {
+	if err != nil {
+		log.Printf(msgf, msgArgs...)
+		os.Exit(1)
+	}
+}
 
 // EnsureDir creates a directory if the given directory does not exist
 func EnsureDir(dir string) error {
