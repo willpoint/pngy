@@ -32,7 +32,7 @@ func main() {
 	source := flag.String("src", "source", "source folder for images")
 	destination := flag.String("dest", "converted", "folder to save converted images")
 	flag.Parse()
-
+	utils.EnsureDir(*source)
 	file, err := os.Open(*source)
 	handleErr(err, log, "error opening file: %v", err)
 
@@ -82,10 +82,10 @@ func work(wg *sync.WaitGroup, log *log.Logger, srcLocation, dstLocation string) 
 	decodedImage, err := imgType.Decode()
 	handleErr(err, log, "error decoding the image type: %v", err)
 
-	dstFile, err := CreateFile(dstLocation)
+	dstFile, err := utils.CreateFile(dstLocation)
 	handleErr(err, log, "error creating destination file: %v", err)
 
-	err = Convert(decodedImage, dstFile)
+	err = convert.Convert(decodedImage, dstFile)
 	handleErr(err, log, "error converting file: %v", err)
 
 	elapsed := time.Since(start)
