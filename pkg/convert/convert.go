@@ -1,4 +1,4 @@
-package main
+package convert
 
 import (
 	"image"
@@ -16,22 +16,22 @@ type Decoder interface {
 
 // JpegImage is a supported image type
 type JpegImage struct {
-	img *os.File
+	Img *os.File
 }
 
 // GifImage is a supported image type
 type GifImage struct {
-	img *os.File
+	Img *os.File
 }
 
 // Decode method for a GIF image to implement the Decoder interface
 func (s *GifImage) Decode() (image.Image, error) {
-	return gif.Decode(s.img)
+	return gif.Decode(s.Img)
 }
 
 // Decode method to for a jpeg|jpg to implement the Decoder interface
 func (s *JpegImage) Decode() (image.Image, error) {
-	return jpeg.Decode(s.img)
+	return jpeg.Decode(s.Img)
 }
 
 // Convert converts the given image to a png format

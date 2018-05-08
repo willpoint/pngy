@@ -12,7 +12,18 @@ import (
 	"os"
 	"sync"
 	"time"
+
+	"github.com/willpoint/pngy/pkg/convert"
+	"github.com/willpoint/pngy/pkg/utils"
 )
+
+// handleErr logs the error with the provided logger
+// and exits the program
+func handleErr(err error, log *log.Logger, msgf string, msgArgs ...interface{}) {
+	if err != nil {
+		log.Fatalf(msgf, msgArgs...)
+	}
+}
 
 func main() {
 	var wg sync.WaitGroup
@@ -28,7 +39,7 @@ func main() {
 	files, err := file.Readdir(-1)
 	handleErr(err, log, "error reading directory: %v", err)
 
-	err = EnsureDir(*destination)
+	err = utils.EnsureDir(*destination)
 	handleErr(err, log, "error creating directory: %v", err)
 
 	wg.Add(len(files))
@@ -40,7 +51,7 @@ func main() {
 		}
 		srcLocation := *source + "/" + v.Name()
 
-		dstName := TrimExt(v.Name(), FileExt(srcLocation))
+		dstName := utils.TrimExt(v.Name(), utils.FileExt(srcLocation))
 		dstLocation := *destination + "/" + dstName + ".png"
 		go work(&wg, log, srcLocation, dstLocation)
 	}
@@ -56,15 +67,15 @@ func work(wg *sync.WaitGroup, log *log.Logger, srcLocation, dstLocation string) 
 	imgFile, err := os.Open(srcLocation)
 	handleErr(err, log, "could not open image file: %v", err)
 
-	var imgType Decoder
+	var imgType convert.Decoder
 
-	extension := FileExt(srcLocation)
+	extension := utils.FileExt(srcLocation)
 	switch extension {
 	case ".jpg", ".jpeg":
-		imgType = &JpegImage{imgFile}
+		imgType = &convert.JpegImage{imgFile}
 		break
 	case ".gif":
-		imgType = &GifImage{imgFile}
+		imgType = &convert.GifImage{imgFile}
 		break
 	}
 
