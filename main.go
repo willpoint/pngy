@@ -4,7 +4,7 @@
 * and writes them to another directory.
 * It does not search recursively into directory
  */
-package pngy
+package main
 
 import (
 	"flag"
