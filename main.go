@@ -4,7 +4,7 @@
 * and writes them to another directory.
 * It does not search recursively into directory
  */
-package main
+package pngy
 
 import (
 	"flag"
@@ -31,6 +31,10 @@ func main() {
 	}
 
 	err := ensureDir(*dstFolder)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	file, err := os.Open(*srcFolder)
 	if err != nil {
 		log.Fatal(err)
