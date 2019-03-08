@@ -31,6 +31,10 @@ func main() {
 	}
 
 	err := ensureDir(*dstFolder)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	file, err := os.Open(*srcFolder)
 	if err != nil {
 		log.Fatal(err)
